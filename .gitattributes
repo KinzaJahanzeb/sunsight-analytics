@@ -1,0 +1,2 @@
+data/solar_forecaster.csv filter=lfs diff=lfs merge=lfs -text
+data/solar_forecaster.db filter=lfs diff=lfs merge=lfs -text
