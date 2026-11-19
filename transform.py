@@ -115,7 +115,7 @@ def transform_all() -> pd.DataFrame:
     # Cast timestamp properly
     combined["timestamp"] = pd.to_datetime(combined["timestamp"])
 
-    print(f"\nTotal: {len(combined):,} rows × {len(combined.columns)} columns")
+    print(f"\nTotal: {len(combined):,} row  {len(combined.columns)} columns")
     return combined
 
 

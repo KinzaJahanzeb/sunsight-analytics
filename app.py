@@ -95,16 +95,14 @@ div[data-baseweb="select"] > div {
     color: #f8fafc !important; 
 }
 
-/* Selected City Tags (Chips) */
+/* Selected City Tags  */
 div[data-baseweb="select"] span {
     background-color: rgba(56, 189, 248, 0.2) !important;
     color: #38bdf8 !important;
     border-radius: 6px !important;
 }
 
-/* =========================================
-   NUCLEAR OPTION: DROPDOWN MENU FIX
-   ========================================= */
+/*Dropdown menu*/
 /* Target the popover wrapper and ALL its children */
 div[data-baseweb="popover"],
 div[data-baseweb="popover"] *,
@@ -122,13 +120,12 @@ div[data-baseweb="popover"] li[aria-selected="true"] {
     color: #f8fafc !important;
 }
 
-/* Hide the "Select all" text color issue */
+/* Select all text color */
 div[data-baseweb="popover"] li:first-child {
     color: #94a3b8 !important;
     border-bottom: 1px solid rgba(56, 189, 248, 0.1) !important;
 }
 
-/* ========================================= */
 
 /* Date Picker Calendar */
 div[data-testid="stDateInput"] input {
@@ -150,9 +147,7 @@ div[data-testid="stDateInput"] input {
 
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
-# ---------------------------------------------------------------------------
-# Data loading (cached)
-# ---------------------------------------------------------------------------
+# Loading cached data
 @st.cache_data(show_spinner=False)
 def load_data() -> pd.DataFrame:
     if Path(DB_PATH).exists():
@@ -170,10 +165,7 @@ def load_data() -> pd.DataFrame:
     df["year"] = df["timestamp"].dt.year
     return df
 
-
-# ---------------------------------------------------------------------------
 # Plotly theme helpers
-# ---------------------------------------------------------------------------
 PLOTLY_LAYOUT = dict(
     template="plotly_dark",
     paper_bgcolor="rgba(0,0,0,0)",
@@ -190,16 +182,12 @@ def style(fig: go.Figure, title: str = "") -> go.Figure:
     return fig
 
 
-# ---------------------------------------------------------------------------
 # Header
-# ---------------------------------------------------------------------------
 st.markdown("# Sunsight Analytics: ETL + EDA Pipeline")
-st.markdown("Diagrammatic EDA of **5 years** of hourly solar and weather data for Pakistani cities.")
+st.markdown("Diagrammatic EDA of 5 years of hourly solar and weather data for Pakistani cities.")
 st.markdown("---")
 
-# ---------------------------------------------------------------------------
 # Load Data & Build Built-In Filter
-# ---------------------------------------------------------------------------
 df = load_data()
 all_cities = sorted(df["city"].unique())
 
@@ -219,9 +207,7 @@ fdf = df[df["city"].isin(selected_cities)].copy()
 
 st.markdown("")
 
-# ---------------------------------------------------------------------------
 # KPI row
-# ---------------------------------------------------------------------------
 k1, k2, k3, k4 = st.columns(4)
 with k1:
     st.metric("Total Rows", f"{len(fdf):,}")
@@ -235,18 +221,14 @@ with k4:
 
 st.markdown("---")
 
-# ---------------------------------------------------------------------------
-# Tabs
-# ---------------------------------------------------------------------------
+#Dashboard Tabs
 tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs([
     "📊 Data Quality", "🌅 Daily Cycle", "📅 Seasonal Pattern", 
     "🏙️ City Comparison", "☁️ Cloud Effect", "🔗 Correlations", 
     "📆 Yearly & Date Compare"
 ])
 
-# ===========================================================================
 # TAB 1 — Data Quality
-# ===========================================================================
 with tab1:
     st.markdown("### Data Quality Dashboard")
     st.caption("Where are the gaps, and which cities have fewer records?")
@@ -276,9 +258,7 @@ with tab1:
         )
         st.plotly_chart(style(fig, "Data Completeness (% Valid) by City"), use_container_width=True)
 
-# ===========================================================================
 # TAB 2 — Daily Cycle
-# ===========================================================================
 with tab2:
     st.markdown("### Daily Sunlight Cycle")
     st.caption("When does sunlight arrive, and how consistent is it? (Local Solar Time)")
@@ -291,9 +271,7 @@ with tab2:
     fig.update_layout(xaxis=dict(tickmode='linear', tick0=0, dtick=2))
     st.plotly_chart(style(fig, "Mean Hourly Irradiance by City"), use_container_width=True)
 
-# ===========================================================================
 # TAB 3 — Seasonal Pattern
-# ===========================================================================
 with tab3:
     st.markdown("### Seasonal Pattern")
     st.caption("How does sunlight change across the year?")
@@ -308,9 +286,7 @@ with tab3:
     fig.update_layout(legend_title="")
     st.plotly_chart(style(fig, "Monthly Mean Irradiance"), use_container_width=True)
 
-# ===========================================================================
 # TAB 4 — City Comparison
-# ===========================================================================
 with tab4:
     st.markdown("### City-to-City Comparison")
     st.caption("Which cities get the most sun?")
@@ -333,9 +309,7 @@ with tab4:
         fig.update_layout(showlegend=False)
         st.plotly_chart(style(fig, "Share of Total Sunlight Received"), use_container_width=True)
 
-# ===========================================================================
 # TAB 5 — Cloud Effect
-# ===========================================================================
 with tab5:
     st.markdown("### Cloud Effect")
     st.caption("How much does cloud cover reduce available sunlight?")
@@ -370,9 +344,7 @@ with tab5:
         fig.update_layout(showlegend=False)
         st.plotly_chart(style(fig, "Total Solar Energy: Available vs. Lost"), use_container_width=True)
 
-# ===========================================================================
-# TAB 6 — Correlations
-# ===========================================================================
+# TAB 6 - Correlations
 with tab6:
     st.markdown("### Correlation Overview")
     st.caption("Which weather variables move together?")
@@ -390,9 +362,7 @@ with tab6:
     fig.update_layout(xaxis_title="Correlation with All-Sky Irradiance", yaxis_title="", xaxis_range=[-1, 1])
     st.plotly_chart(style(fig, "How Weather Variables Affect Sunlight"), use_container_width=True)
 
-# ===========================================================================
 # TAB 7 — Yearly & Date Comparison
-# ===========================================================================
 with tab7:
     st.markdown("### Yearly & Specific Date Comparison")
     st.caption("Compare cities across different years, or look at a specific historical day.")
@@ -435,8 +405,6 @@ with tab7:
     else:
         st.warning("No data available for the selected date.")
 
-# ---------------------------------------------------------------------------
 # Footer
-# ---------------------------------------------------------------------------
 st.markdown("---")
-st.caption("Data: NASA POWER Hourly API · Renewable Energy community · Local Solar Time (LST) · 2020–2024")
+st.caption(" Built by: The Dev Girlies - Data: NASA POWER Hourly API ")

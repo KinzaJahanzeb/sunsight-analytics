@@ -2,10 +2,8 @@
 """Write clean data to SQLite and CSV backup."""
 
 from pathlib import Path
-
 import pandas as pd
 from sqlalchemy import create_engine
-
 from config import CSV_PATH, DB_PATH
 
 
