@@ -1,12 +1,12 @@
-# Data files (too large for GitHub)
-data/
+# Data files (ignore raw and CSV backup, keep SQLite DB for Streamlit Cloud)
+data/raw/
 *.csv
-*.db
 
 # Python cache
 __pycache__/
 *.pyc
 venv/
+.venv/
 .ipynb_checkpoints/
 
 # OS files
